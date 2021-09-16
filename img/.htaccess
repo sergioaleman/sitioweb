@@ -1,0 +1,22 @@
+Options -Indexes
+
+
+
+<Files *.php>
+Deny from all
+</Files>
+
+
+
+Order Allow,Deny
+Deny from all
+<FilesMatch "^[^.]+\.(?i:jpe?g|png|gif)$">
+Allow from all
+</FilesMatch>
+
+
+
+<FilesMatch "\.(php|php\.)(.+)(\w|\d)$">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>
