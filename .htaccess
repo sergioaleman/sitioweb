@@ -1,0 +1,650 @@
+RedirectMatch 403 \[
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+ RewriteCond %{QUERY_STRING} config.php
+RewriteCond %{QUERY_STRING} config.inc.php
+        RewriteRule .* - [F]
+RewriteCond %{REQUEST_METHOD} POST
+RewriteCond %{HTTP_REFERER} !^http://(.*)?sergioaleman\.com\.ve [NC]
+RewriteCond %{REQUEST_URI} ^/(.*)?config\.php(.*)$ [OR]
+RewriteCond %{REQUEST_URI} ^/(.*)?config\.inc\.php(.*)$ [OR]
+RewriteCond %{REQUEST_URI} ^/(.*)wp-admin$
+RewriteRule ^(.*)$ - [R=403,L]
+RewriteCond %{REQUEST_URI} ^/(.*)?css\.php(.*)$
+RewriteRule .* - [F]
+RewriteCond %{QUERY_STRING} environ [NC]
+RewriteRule .* - [F]
+RewriteCond %{REQUEST_URI} ^/wp-admin\/textpattern\/im2-agregar276\/config\/(.)*\.php
+RewriteRule .* - [F]
+	RewriteCond %{REQUEST_FILENAME} -f [OR]
+	RewriteCond %{REQUEST_FILENAME} -d
+	RewriteRule ^(.+) - [PT,L]
+	RewriteCond %{REQUEST_URI} !=/favicon.ico
+	RewriteRule ^(.*) index.php
+	RewriteCond %{HTTP:Authorization}  !^$
+	RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization}]
+</IfModule>
+
+
+
+AddType image/svg+xml  svg svgz
+AddEncoding gzip       svgz
+
+
+SetEnv PHP_VERSION 5
+
+
+SetOutputFilter DEFLATE
+
+
+ServerSignature Off
+
+
+ErrorDocument 401 /error401.html
+ErrorDocument 403 /error403.html
+ErrorDocument 404 /error404.html
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+Options +FollowSymLinks
+
+
+RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
+RewriteCond %{HTTP_USER_AGENT} ^(-|\.|') [OR]
+RewriteCond %{HTTP_USER_AGENT} ^(.*)(<|>|%3C|%3E)(.*) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^(java|curl|wget)(.*) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^(.*)(libwww-perl|libwwwperl|snoopy|curl|wget|winhttp|python|nikto|scan|clshttp|archiver|loader|email|harvest|fetch|extract|grab|miner|suck|reaper|leach)(.*) [NC,OR]
+RewriteCond %{REQUEST_URI} ^(/,|/;|/<|/>|/'|/`|/%2C|/%3C|/%3E|/%27|/////) [NC,OR]
+RewriteCond %{HTTP_REFERER} ^(.*)(%00|%08|%09|%0A|%0B|%0C|%0D|%0E|%0F|%2C|<|>|'|%3C|%3E|%26%23|%27|%60)(.*) [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)(%00|%08|%09|%0A|%0B|%0C|%0D|%0E|%0F|%2C|%3C|%3E|%27|%26%23|%60)(.*) [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)('|-|<|>|,|/|\\|\.a|\.c|\.t|\.d|\.p|\.i|\.e|\.j)(.*) [NC,OR]
+RewriteCond %{HTTP_COOKIE} ^(.*)(<|>|'|%3C|%3E|%27)(.*) [NC]
+
+
+
+IndexIgnore *
+
+
+LimitRequestBody 10240000
+
+
+RewriteEngine On
+
+
+RewriteCond %{QUERY_STRING} proc/self/environ [OR]
+
+
+RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
+
+
+RewriteCond %{QUERY_STRING} base64_encode.*(.*) [OR]
+
+
+RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+
+
+RewriteCond %{QUERY_STRING} GLOBALS(=|[|\%[0-9A-Z]{0,2}) [OR]
+
+
+RewriteCond %{QUERY_STRING} _REQUEST(=|[|\%[0-9A-Z]{0,2})
+
+
+RewriteRule ^(.*)$ index.php [F,L]
+
+
+
+
+SetEnvIfNoCase user-Agent ^FrontPage [NC,OR]
+SetEnvIfNoCase user-Agent ^Java.* [NC,OR]
+SetEnvIfNoCase user-Agent ^Microsoft.URL [NC,OR]
+SetEnvIfNoCase user-Agent ^MSFrontPage [NC,OR]
+SetEnvIfNoCase user-Agent ^Offline.Explorer [NC,OR]
+SetEnvIfNoCase user-Agent ^[Ww]eb[Bb]andit [NC,OR]
+SetEnvIfNoCase user-Agent ^Zeus [NC]
+Order Allow,Deny
+Allow from all
+Deny from env=bad_bot
+
+
+FileETag none
+
+
+AddDefaultCharset UTF-8
+
+
+RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK|DEBUG) [NC]
+RewriteRule ^(.*)$ - [F,L]
+
+
+RewriteCond %{THE_REQUEST} \?\ HTTP/ [NC,OR]
+RewriteCond %{THE_REQUEST} \/\*\ HTTP/ [NC,OR]
+RewriteCond %{THE_REQUEST} etc/passwd [NC,OR]
+RewriteCond %{THE_REQUEST} cgi-bin [NC,OR]
+RewriteCond %{THE_REQUEST} (%0A|%0D) [NC,OR]
+
+
+
+
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC,OR]
+RewriteCond %{QUERY_STRING} (\.\./|\.\.) [OR]
+RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
+RewriteCond %{QUERY_STRING} http\: [NC,OR]
+RewriteCond %{QUERY_STRING} https\: [NC,OR]
+RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} ^.*(\[|\]|\(|\)|<|>).* [NC,OR]
+RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
+RewriteCond %{QUERY_STRING} (\./|\../|\.../)+(motd|etc|bin) [NC,OR]
+RewriteCond %{QUERY_STRING} (localhost|loopback|127\.0\.0\.1) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|>|'|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
+RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
+RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC,OR]
+RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|drop|delete|update|cast|create|char|convert|alter|declare|order|script|set|md5|benchmark|encode) [NC,OR]
+RewriteCond %{QUERY_STRING} (sp_executesql) [NC]
+RewriteRule ^(.*)$ - [F,L]
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} ^TRACE
+RewriteRule .* - [F]
+
+
+
+
+<Limit GET>
+order allow,deny
+
+deny from 213.5.64.19          
+
+allow from all
+</Limit>
+
+
+
+
+<LimitExcept GET POST>
+Order Allow,Deny
+Deny from all
+</LimitExcept>
+
+
+
+Redirect 301 /muieblackcat                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /db                                     http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /dbadmin                           http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /myadmin                          http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /mysql                                http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /mysqladmin                        http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /typo3/phpmyadmin                http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpadmin                          http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin                        http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpmyadmin                       http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpmyadmin1                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpmyadmin2                       http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /pma                                     http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /web/phpMyAdmin                    http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /xampp/phpmyadmin                 http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /websql                            http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /php-my-admin                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.2.3                  http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.2.6                  http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.1                  http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.4                  http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.5-rc1              http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.5-rc2            http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.5-pl1              http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.6-rc1              http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.6-rc2             http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.6                  http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.7                http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMyAdmin-2.5.7-pl1              http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /wp-login.php                     http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /blog/wp-login.php                 http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /wordpress/wp-login.php            http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /wp/wp-login.php                  http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /administrador                  http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /access                        http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /access.php                   http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /agregared                    http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /agregared.php              http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /setuped                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /administrator                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /installed                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /installed.php                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /updated.php                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /updated                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /xmlrpc.php                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /phpMemcachedAdmin                 http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /user/login                      http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /user/password                     http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /textpattern                     http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /updateed                        http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /rpc                        http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /rpc.php                       http://www.sergioaleman.com.ve/BanearIP.php
+Redirect 301 /textpattern/admin-ajax.php     http://www.sergioaleman.com.ve/BanearIP.php                                                                   
+Redirect 301 /wp-config.php              http://www.sergioaleman.com.ve/BanearIP.php
+
+
+
+
+RewriteBase /
+RewriteCond %{REQUEST_URI} !^/robots.txt$ [NC]
+RewriteCond %{REQUEST_URI} robots.txt [NC]
+RewriteRule .* http://m.sergioaleman.com.ve/robots.txt [R=301,L]
+
+<Files ~ "\.(js|css)$">
+  order allow,deny
+  allow from all
+</Files>
+
+
+
+<IfModule mod_speling.c>
+CheckSpelling On
+</IfModule>
+
+
+<files config.php>
+order allow,deny
+deny from all
+</files>
+
+
+
+<files config.inc.php>
+order allow,deny
+deny from all
+</files>
+
+
+
+<FilesMatch "\.(htaccess|ini|log|cfg|tpl)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+
+
+	<IfModule mod_rewrite.c>
+	 RewriteEngine On
+	 RewriteBase /
+	 RewriteCond %{QUERY_STRING} (environ|localhost|mosconfig|scanner) [NC,OR]
+	 RewriteCond %{QUERY_STRING} (menu|mod|path|tag)\=\.?/? [NC,OR]
+	 RewriteCond %{QUERY_STRING} boot\.ini  [NC,OR]
+	 RewriteCond %{QUERY_STRING} echo.*kae  [NC,OR]
+	 RewriteCond %{QUERY_STRING} etc/passwd [NC,OR]
+	 RewriteCond %{QUERY_STRING} \=\\%27$   [NC,OR]
+	 RewriteCond %{QUERY_STRING} \=\\\'$    [NC,OR]
+	 RewriteCond %{QUERY_STRING} \.\./      [NC,OR]
+	 RewriteCond %{QUERY_STRING} \:         [NC,OR]
+	 RewriteCond %{QUERY_STRING} \[         [NC,OR]
+	 RewriteCond %{QUERY_STRING} \]         [NC]
+	 RewriteRule .* - [F]
+	</IfModule>
+	
+	
+	
+	<IfModule mod_setenvif.c>
+	 SetEnvIfNoCase User-Agent ^$ keep_out
+	 SetEnvIfNoCase User-Agent (casper|cmsworldmap|diavol|dotbot)   keep_out
+	 SetEnvIfNoCase User-Agent (flicky|ia_archiver|jakarta|kmccrew) keep_out
+	 SetEnvIfNoCase User-Agent (libwww|planetwork|pycurl|skygrid)   keep_out
+	 <Limit GET POST PUT>
+	  Order Allow,Deny
+	  Allow from all
+	  Deny from env=keep_out
+	 </Limit>
+	</IfModule>
+	
+	
+
+
+	<IfModule mod_alias.c>
+	 RedirectMatch 403 (https?|ftp|php)\://
+	 RedirectMatch 403 /(cgi|https?|ima|ucp)/
+	 RedirectMatch 403 (\=\\\'|\=\\%27|/\\\'/?|\)\.css\()$
+	 RedirectMatch 403 (\,|//|\)\+|/\,/|\{0\}|\(/\(|\.\.\.|\+\+\+|\|)
+	 RedirectMatch 403 \.(cgi|asp|aspx|cfg|dll|exe|jsp|mdb|sql|ini|rar)$
+	 RedirectMatch 403 /(contac|fpw|install|pingserver|register)\.php
+	 RedirectMatch 403 (base64|crossdomain|localhost|wwwroot)
+	 RedirectMatch 403 (eval\(|\_vti\_|\(null\)|echo.*kae)
+	 RedirectMatch 403 \.well\-known/host\-meta
+	 RedirectMatch 403 /function\.array\-rand
+	 RedirectMatch 403 \)\;\$\(this\)\.html\(
+	 RedirectMatch 403 proc/self/environ
+	 RedirectMatch 403 msnbot\.htm\)\.\_
+	 RedirectMatch 403 /ref\.outcontrol
+	 RedirectMatch 403 com\_cropimage
+	 RedirectMatch 403 indonesia\.htm
+	 RedirectMatch 403 \{\$itemURL\}
+	 RedirectMatch 403 function\(\)
+	 RedirectMatch 403 labels\.rdf
+	</IfModule>
+	
+	
+
+
+	<Files ~ "^.*\.(&#91;Hh&#93;&#91;Tt&#93;&#91;Aa&#93;)">
+	 order allow,deny
+	 deny from all
+	 satisfy all
+	</Files>
+	
+	
+
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %{QUERY_STRING} (eval\() [NC,OR]
+	RewriteCond %{QUERY_STRING} (127\.0\.0\.1) [NC,OR]
+	RewriteCond %{QUERY_STRING} ([a-z0-9]{2000}) [NC,OR]
+	RewriteCond %{QUERY_STRING} (javascript:)(.*)(;) [NC,OR]
+	RewriteCond %{QUERY_STRING} (base64_encode)(.*)(\() [NC,OR]
+	RewriteCond %{QUERY_STRING} (GLOBALS|REQUEST)(=|\[|%) [NC,OR]
+	RewriteCond %{QUERY_STRING} (<|%3C)(.*)script(.*)(>|%3) [NC,OR]
+	RewriteCond %{QUERY_STRING} (\\|\.\.\.|\.\./|~|`|<|>|\|) [NC,OR]
+	RewriteCond %{QUERY_STRING} (boot\.ini|etc/passwd|self/environ) [NC,OR]
+	RewriteCond %{QUERY_STRING} (thumbs?(_editor|open)?|tim(thumb)?)\.php [NC,OR]
+	RewriteCond %{QUERY_STRING} (\'|\")(.*)(drop|insert|md5|select|union) [NC]
+	RewriteRule .* - [F]
+</IfModule>
+
+
+
+
+<IfModule mod_rewrite.c>
+	RewriteCond %{REQUEST_METHOD} ^(connect|debug|delete|move|put|trace|track) [NC]
+	RewriteRule .* - [F]
+</IfModule>
+
+
+<IfModule mod_rewrite.c>
+	RewriteCond %{HTTP_REFERER} ([a-z0-9]{2000}) [NC,OR]
+	RewriteCond %{HTTP_REFERER} (semalt.com|todaperfeita) [NC]
+	RewriteRule .* - [F]
+</IfModule>
+
+
+<IfModule mod_alias.c>
+	RedirectMatch 403 (?i)([a-z0-9]{2000})
+	RedirectMatch 403 (?i)(https?|ftp|php):/
+	RedirectMatch 403 (?i)(base64_encode)(.*)(\()
+	RedirectMatch 403 (?i)(=\\\'|=\\%27|/\\\'/?)\.
+	RedirectMatch 403 (?i)/(\$(\&)?|\*|\"|\.|,|&|&amp;?)/?$
+	RedirectMatch 403 (?i)(\{0\}|\(/\(|\.\.\.|\+\+\+|\\\"\\\")
+	RedirectMatch 403 (?i)(~|`|<|>|:|;|,|%|\\|\s|\{|\}|\[|\]|\|)
+	RedirectMatch 403 (?i)/(=|\$&|_mm|cgi-|etc/passwd|muieblack)
+	RedirectMatch 403 (?i)(&pws=0|_vti_|\(null\)|\{\$itemURL\}|echo(.*)kae|etc/passwd|eval\(|self/environ)
+	RedirectMatch 403 (?i)\.(aspx?|bash|bak?|cfg|cgi|dll|exe|git|hg|ini|jsp|log|mdb|out|sql|svn|swp|tar|rar|rdf)$
+	RedirectMatch 403 (?i)/(^$|(wp-)?config|mobiquo|phpinfo|shell|sqlpatch|thumb|thumb_editor|thumbopen|timthumb|webshell)\.php
+</IfModule>
+
+
+
+
+<IfModule mod_setenvif.c>
+	SetEnvIfNoCase User-Agent ([a-z0-9]{2000}) bad_bot
+	SetEnvIfNoCase User-Agent (archive.org|binlar|casper|checkpriv|choppy|clshttp|cmsworld|diavol|dotbot|extract|feedfinder|flicky|g00g1e|harvest|heritrix|httrack|kmccrew|loader|miner|nikto|nutch|planetwork|postrank|purebot|pycurl|python|seekerspider|siclab|skygrid|sqlmap|sucker|turnit|vikspider|winhttp|xxxyy|youda|zmeu|zune) bad_bot
+	<limit GET POST PUT>
+		Order Allow,Deny
+		Allow from All
+		Deny from env=bad_bot
+	</limit>
+</IfModule>
+
+
+
+
+<Limit GET HEAD OPTIONS POST PUT>
+	Order Allow,Deny
+	Allow from All
+	
+	
+</Limit>
+
+
+
+<IfModule mod_setenvif.c>
+	Order Allow,Deny
+	Allow from all
+	Deny from 123.151.39.
+	Deny from 77.172.210.
+	Deny from 174.94.131.
+	Deny from 89.238.137.59
+	Deny from 212.90.148.101
+	Deny from 91.207.61.129
+	Deny from 202.46.52.120
+	Deny from 128.73.60.194
+	Deny from 68.108.17.141
+	Deny from 27.54.93.178
+	Deny from 194.9.94.213
+	Deny from 122.166.169.127
+	Deny from 96.9.163.49
+	Deny from 54.229.73.40
+	Deny from 203.109.158.201
+	Deny from 46.105.113.8
+	Deny from 183.60.244.
+	Deny from 54.232.102.193
+	Deny from 195.157.124.186
+	Deny from 118.39.113.219
+	Deny from 27.255.56.87
+	Deny from 69.161.138.1
+	Deny from 192.96.204.42
+	Deny from 178.63.52.200
+	Deny from 27.252.92.103
+	Deny from 37.59.65.58
+	Deny from 186.202.126.94
+	Deny from 186.213.72.146
+	Deny from 186.219.44.6
+</IfModule>
+<IfModule mod_rewrite.c>
+	RewriteCond %{HTTP_HOST} (.*)\.crimea\.com [NC,OR]
+	RewriteCond %{HTTP_HOST} s368\.loopia\.se [NC,OR]
+	RewriteCond %{HTTP_HOST} kanagawa\.ocn [NC,OR]
+	RewriteCond %{HTTP_HOST} g00g1e [NC,OR]
+	RewriteCond %{HTTP_USER_AGENT} (ia_archiver|g00g1e|seekerspider|siclab|spam|sqlmap) [NC]
+	RewriteRule .* - [F,L]
+</IfModule>
+<IfModule mod_alias.c>
+	RedirectMatch 403 router\.php
+	RedirectMatch 403 /\)\.html\(
+</IfModule>
+
+
+
+<IfModule mod_rewrite.c>
+	RewriteCond %{QUERY_STRING} http\:\/\/www\.google\.com\/humans\.txt\? [NC]
+	RewriteRule .* - [F,L]
+</IfModule>
+
+
+<IfModule mod_rewrite.c>
+	RewriteCond %{QUERY_STRING} revslider [NC,OR]
+	RewriteCond %{REQUEST_URI} revslider [NC]
+	RewriteRule .* - [F,L]
+</IfModule>
+
+
+<IfModule mod_rewrite.c>
+	RewriteCond %{REQUEST_URI}  (mssqlil|register).php [NC,OR]
+	RewriteCond %{REQUEST_URI}  (img|thumb|thumb_editor|thumbopen).php [NC,OR]
+	RewriteCond %{QUERY_STRING} (img|thumb|thumb_editor|thumbopen).php [NC,OR]
+	RewriteCond %{REQUEST_URI}  revslider [NC,OR]
+	RewriteCond %{QUERY_STRING} revslider [NC]
+	RewriteRule .* - [F,L]
+</IfModule>
+
+
+
+
+RewriteCond %{REQUEST_METHOD} GET
+  RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+  RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+  RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC]
+  RewriteRule .* - [F]
+
+
+RewriteRule ^(cache|include|logs|tmp)/ - [F]
+
+
+RewriteCond %{REQUEST_FILENAME} -f
+  RewriteCond %{REQUEST_URI} \.php|\.ini|\.xml [NC]
+  RewriteCond %{REQUEST_URI} \/files\/ [OR]
+RewriteCond %{REQUEST_URI} \/wp-admin\/ [OR]
+RewriteCond %{REQUEST_URI} \/js\/ [OR]
+RewriteCond %{REQUEST_URI} \/style\/ [OR]
+  RewriteCond %{REQUEST_URI} \/images\/ [OR]
+  RewriteCond %{REQUEST_URI} \/img\/ [OR]
+  RewriteCond %{REQUEST_URI} \/articulos\/ [OR]
+  RewriteCond %{REQUEST_URI} \/include\/ [OR]
+  RewriteCond %{REQUEST_URI} \/rpc\/
+  RewriteRule ^(.*)$ index.php [R=404]
+  
+  
+
+
+ RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
+  RewriteCond %{HTTP_USER_AGENT} ^(java|curl|wget) [NC,OR]
+  RewriteCond %{HTTP_USER_AGENT} (winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC,OR]
+  RewriteCond %{HTTP_USER_AGENT} (libwww-perl|curl|wget|python|nikto|scan) [NC,OR]
+  RewriteCond %{HTTP_USER_AGENT} (<|>|’|%0A|%0D|%27|%3C|%3E|%00) [NC]
+  RewriteRule .* - [F]
+
+
+
+ RewriteCond %{QUERY_STRING} (;|<|>|’|”|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|cast|set|declare|drop|update|md5|benchmark) [NC,OR]
+  RewriteCond %{QUERY_STRING} \.\./\.\. [OR]
+  RewriteCond %{QUERY_STRING} (localhost|loopback|127\.0\.0\.1) [NC,OR]
+  RewriteCond %{QUERY_STRING} \.[a-z0-9] [NC,OR]
+  RewriteCond %{QUERY_STRING} (<|>|’|%0A|%0D|%27|%3C|%3E|%00) [NC]
+  RewriteRule .* - [F]
+
+
+ <Files ~ "\.old$">
+  Order allow,deny
+  Deny from all
+  Satisfy all
+  </Files>
+
+
+ <FilesMatch "(^|/)_">
+  Order allow,deny
+  Deny from all
+  Satisfy all
+  </FilesMatch>
+
+
+	
+ <Files sitemap.xml>
+  Header set X-Robots-Tag "noindex"
+ </Files>
+
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+
+
+
+Options +FollowSymlinks
+RewriteEngine On
+RewriteCond %{REQUEST_URI} .google\.php*
+RewriteRule ^(.*)$ ^http://www.google.com/search?q=$1 [R,NC,L]
+
+
+
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK|OPTIONS|HEAD)$ [NC]
+RewriteRule ^.*$ - [F]
+
+
+RewriteCond %{HTTP_REFERER} !^http://m.sergioaleman.com.ve/.*$ [NC]
+RewriteCond %{REQUEST_POST} .*index.php$
+RewriteRule .* - [F]
+
+
+
+RewriteCond %{HTTP_USER_AGENT} ^Mozilla.*
+RewriteRule ^/$ /index-for-mozilla.html [L]
+RewriteCond %{HTTP_USER_AGENT} ^Lynx.*
+RewriteRule ^/$ /index-for-lynx.html [L]
+RewriteRule ^/$ /index-for-all-others.html [L]
+
+
+ExpiresActive On
+ExpiresByType image/gif "access plus 30 days"
+ExpiresByType image/jpeg "access plus 30 days"
+ExpiresByType image/png "access plus 30 days"
+ExpiresByType text/css "access plus 1 week"
+ExpiresByType text/javascript "access plus 1 week"
+
+
+
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf)$">
+Header set Cache-Control "max-age=2592000"
+</FilesMatch>
+
+
+
+
+<FilesMatch ".(js|css|pdf|txt)$">
+Header set Cache-Control "max-age=604800"
+</FilesMatch>
+
+
+<FilesMatch ".(html|htm)$">
+Header set Cache-Control "max-age=43200"
+</FilesMatch>
+
+
+
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(m\.)?sergioaleman.com.ve/.*$ [NC]
+RewriteRule \.(js|css|jpg|gif|png|bmp|mp4|3gp|m4a|m4r|aac|mp3|ogg|wave)$ - [F]
+</ifModule>
+
+
+RewriteEngine On
+RewriteCond %{HTTP_REFERER} !(^http://(m\.)?sergioaleman\.com\.ve)
+RewriteCond %{SCRIPT_FILENAME} \.(js|css|jpg|gif|png|bmp|mp4|3gp|m4a|m4r|aac|mp3|ogg|wave)$
+RewriteRule ^(.*) http://m.sergioaleman.com.ve/images/atencion.gif [L]
+
+
+RedirectMatch 301 /apple-touch-icon(.*)?.png http://m.sergioaleman.como.ve/apple-touch.png
+
+
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{HTTP_USER_AGENT} !FeedBurner    [NC]
+RewriteCond %{HTTP_USER_AGENT} !FeedValidator [NC]
+RewriteRule ^rss/?([_0-9a-z-]+)?/?$ http://feeds.feedburner.com/Sergioaleman [R=302,NC,L]
+</IfModule>
+
+
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http(s)?://(m\.)?sergioaleman.com.ve/.*$      [NC]
+RewriteRule .*\.(.*)$ http://m.sergioaleman.com.ve/images/atencion.gif [R,NC]
